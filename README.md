@@ -1,4 +1,3 @@
-# django_test
 1.创建虚拟环境
 python -m venv venv  --Python自带
 
@@ -47,6 +46,15 @@ class Migration(migrations.Migration):
             reverse_sql="ALTER TABLE your_app_article MODIFY COLUMN title VARCHAR(200);"
         )
     ]
+
+python manage.py makemigrations # 生成迁移文件
+python manage.py sqlmigrate your_app 0002 # 查看SQL语句
+python manage.py migrate # 执行迁移
+5、创建视图
+在应用模块views.py中写处理逻辑
+
+6、创建url
+在应用模块urls.py中写路径
 
 5、创建视图
 在应用模块views.py中写处理逻辑
