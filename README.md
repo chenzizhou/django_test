@@ -1,3 +1,15 @@
+配置镜像源
+pip config set global.index-url http://cmc-cd-mirror.rnd.huawei.com/pypi/simple/
+pip config set install.trusted-host cmc-cd-mirror.rnd.huawei.com
+1、进入C:\Users\y00827004 (自己的账号)
+2、创建一个叫pip的文件夹
+3.创建一个叫pip.ini的文件，文件内容填
+[global]
+index-url = http://cmc-cd-mirror.rnd.huawei.com/pypi/simple/
+[install]
+trusted-host = cmc-cd-mirror.rnd.huawei.com
+4、之后正常pip install 就可以安装所需库了
+
 1.创建虚拟环境
 python -m venv venv  --Python自带
 
@@ -50,16 +62,15 @@ class Migration(migrations.Migration):
 python manage.py makemigrations # 生成迁移文件
 python manage.py sqlmigrate your_app 0002 # 查看SQL语句
 python manage.py migrate # 执行迁移
-5、创建视图
-在应用模块views.py中写处理逻辑
-
-6、创建url
-在应用模块urls.py中写路径
 
 5、创建视图
 在应用模块views.py中写处理逻辑
+from urllib.parse import quote, unquote
+浏览器cookie和url地址中不能显示中文，需要转移成ASSIC值
 
 6、创建url
 在应用模块urls.py中写路径
 参考文件：https://blog.csdn.net/weixin_73749601/article/details/146356702?ops_request_misc=%257B%2522request%255Fid%2522%253A%25220dccbf8ffe0c77eb363bf97de2b66082%2522%252C%2522scm%2522%253A%252220140713.130102334..%2522%257D&request_id=0dccbf8ffe0c77eb363bf97de2b66082&biz_id=0&utm_medium=distribute.pc_search_result.none-task-blog-2~all~sobaiduend~default-1-146356702-null-null.142^v102^pc_search_result_base5&utm_term=django%E4%BD%BF%E7%94%A8bootstrap%E6%A8%A1%E6%9D%BF&spm=1018.2226.3001.4187
 
+7、创建admin管理用户
+python manage.py createsuperuser
