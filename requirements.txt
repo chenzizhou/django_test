@@ -1,0 +1,12 @@
+asgiref==3.9.2
+async-timeout==5.0.1
+Django==5.2.6
+django-redis==6.0.0
+django-redis-sessions==0.6.2
+mysqlclient @ file:///D:/PROJECT/django_test/mysqlclient-2.2.7-cp310-cp310-win_amd64.whl#sha256=2e3c11f7625029d7276ca506f8960a7fd3c5a0a0122c9e7404e6a8fe961b3d22
+PyMySQL==1.1.1
+pytz==2021.1
+redis==6.4.0
+sqlparse==0.4.1
+typing_extensions==4.15.0
+tzdata==2025.2
