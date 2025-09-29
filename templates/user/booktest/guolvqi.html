@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+{%load filters%}
+<ur>
+    {% for book in list %}
+    {% if book.id|mod %}
+    <li style="background-color: red">
+        {{book.btitle}}
+        {{book.bpub_date}}
+    </li>
+    {%else%}
+    <li style="background-color: blue">
+        {{book.btitle}}
+        {{book.bpub_date}}
+    {%endif%}
+    {%endfor%}
+</ur>
+</body>
+</html>
