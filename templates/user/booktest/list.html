@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<ul>
+    {%for hero in list%}
+    <li>{{hero.hname}}--<a href="{% url 'booktest:list' id=hero.id %}">删除</a></li>
+    {%endfor%}
+</ul>
+</body>
+</html>
