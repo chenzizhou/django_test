@@ -1,0 +1,140 @@
+{% extends "user/base_sidebar.html" %}
+
+{% block title %}账号管理 - 我的网站{% endblock %}
+
+{% block content %}
+<h2>欢迎来到账号管理</h2>
+<div>
+    <!-- Button trigger modal -->
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+        添加
+    </button>
+
+    <!-- Modal 添加-->
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+         aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">添加账号</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="{% url 'user:AddAccount'%}" method="post" class="needs-validation">
+                    {% csrf_token %}
+                    <div class="modal-body">
+                        <div class="input-group input-group-sm mb-3">
+                            <span class="input-group-text" id="inputGroup-sizing-sm">账号</span>
+                            <input type="text" class="form-control is-validated" aria-label="Sizing example input"
+                                   aria-describedby="inputGroup-sizing-sm" placeholder="请输入账号" name="account"
+                                   required
+                                   oninvalid="this.setCustomValidity('请输入用户名')"
+                                   oninput="this.setCustomValidity('')">
+                        </div>
+                        <div class="input-group input-group-sm mb-3">
+                            <span class="input-group-text">密码</span>
+                            <input type="text" class="form-control" aria-label="Sizing example input"
+                                   aria-describedby="inputGroup-sizing-sm" placeholder="请输入密码" name="password"
+                                   required
+                                   oninvalid="this.setCustomValidity('请输入密码')"
+                                   oninput="this.setCustomValidity('')">
+                        </div>
+                        <div class="input-group input-group-sm mb-3">
+                            <span class="input-group-text">平台</span>
+                            <input type="text" class="form-control" aria-label="Sizing example input"
+                                   aria-describedby="inputGroup-sizing-sm" placeholder="请输入平台" name="platform"
+                                   required
+                                   oninvalid="this.setCustomValidity('请输入平台')"
+                                   oninput="this.setCustomValidity('')">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                        <button type="submit" class="btn btn-primary">确定</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <table class="table">
+        <thead>
+        <tr class="table-success">
+            <th scope="col">序号</th>
+            <th scope="col">账号</th>
+            <th scope="col">密码</th>
+            <th scope="col">平台</th>
+            <th scope="col">操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        {%for account in accounts %}
+        <tr>
+            <th scope="row">{{forloop.counter}}</th>
+            <td>{{account.account}}</td>
+            <td>{{account.password}}</td>
+            <td>{{account.platform}}</td>
+            <td>
+                <a class="btn btn-primary btn-sm" href="#" role="button" data-bs-toggle="modal"
+                   data-bs-target="#staticBackdrop1"
+                   style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .70rem;">修改</a>
+                <!--修改模态框-->
+                <div class="modal fade" id="staticBackdrop1" data-bs-backdrop="static" data-bs-keyboard="false"
+                     tabindex="-1"
+                     aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="staticBackdropLabel1">修改账号信息</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                            </div>
+                            <form action="{% url 'user:modAccount'%}" method="post" class="needs-validation">
+                                {% csrf_token %}
+                                <div class="modal-body">
+                                    <div class="input-group input-group-sm mb-3">
+                                        <span class="input-group-text" id="inputGroup-sizing-sm1">账号</span>
+                                        <input type="text" class="form-control is-validated"
+                                               aria-label="Sizing example input"
+                                               aria-describedby="inputGroup-sizing-sm" placeholder="请输入账号"
+                                               name="account"
+                                               required
+                                               oninvalid="this.setCustomValidity('请输入账号')"
+                                               oninput="this.setCustomValidity('')" value="{{account.account}}"
+                                               readonly>
+                                    </div>
+                                    <div class="input-group input-group-sm mb-3">
+                                        <span class="input-group-text">密码</span>
+                                        <input type="text" class="form-control" aria-label="Sizing example input"
+                                               aria-describedby="inputGroup-sizing-sm" placeholder="请输入密码"
+                                               name="password"
+                                               required
+                                               oninvalid="this.setCustomValidity('请输入密码')"
+                                               oninput="this.setCustomValidity('')" value="{{account.password}}">
+                                    </div>
+                                    <div class=" input-group input-group-sm mb-3">
+                                        <span class="input-group-text">平台</span>
+                                        <input type="text" class="form-control" aria-label="Sizing example input"
+                                               aria-describedby="inputGroup-sizing-sm" placeholder="请输入平台"
+                                               name="platform"
+                                               required
+                                               oninvalid="this.setCustomValidity('请输入平台')"
+                                               oninput="this.setCustomValidity('')" value="{{account.platform}}">
+                                    </div>
+                                </div>
+                                <div class=" modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消
+                                    </button>
+                                    <button type="submit" class="btn btn-primary">确定</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <a class="btn btn-danger btn-sm" href="{% url 'user:delAccount' account.account_id %}" role="button"
+                   style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .70rem;">删除</a>
+            </td>
+        </tr>
+        {%endfor%}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
