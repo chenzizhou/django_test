@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>登录界面</title>
+</head>
+<body>
+<div>
+    <form action="{%url 'user:login' %}" method="POST">
+        {% csrf_token %}
+        <label>用户名<input type="text" placeholder="请输入用户名" name="username"></label><br>
+        <label>密 &nbsp; 码 <input type="password" placeholder="请输入密码" name='password'></label><br>
+        <label>记住我<input type="checkbox"  name='remember_me'></label><br>
+        <input type="submit" value="登录">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;
+        &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; <a href="{%url 'user:toRegister' %}">前去注册</a>
+        <div>{{errorMessage}}</div>
+    </form>
+</div>
+</body>
+</html>
