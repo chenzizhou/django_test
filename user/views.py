@@ -1,12 +1,16 @@
 import hashlib
 import random
 
+from django.conf import settings
 from django.contrib import auth
 from django.contrib.auth.models import User
-from django.http import HttpResponse, HttpResponseRedirect
+from django.contrib.sessions.models import Session
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.views.decorators.http import require_http_methods
+
+from user.models import Account
 
 
 # Create your views here.
@@ -15,18 +19,19 @@ def login_view(request):
     if request.method == 'GET':
         str1 = '%s<br>%s' % (request.path, request.encoding)
         print(str1)
-        return render(request, 'user/login.html')
+        return render(request, 'user/login_bootstrap.html')
     else:
         # 验证用户凭证
         username = request.POST.get('username')
         password = request.POST.get('password')
-        remember_me = request.POST.get('remember_me', False)
-        print(username, password, '---------------')
+        remember_me = request.POST.get('remember_me')
+        print(username, password, remember_me, '---------------')
+        print(request.session.session_key)
+        print(Session.objects.all())
         user_obj = auth.authenticate(request=request, username=username, password=password)
         if not user_obj:
-            return render(request, 'user/login.html', {'errorMessage': '用户名或密码错误'})
+            return render(request, 'user/login_bootstrap.html', {'errorMessage': '用户名或密码错误'})
         else:
-
             auth.login(request, user_obj)
             path = request.GET.get("next") or "/user/index/"
             print(path, '--------------------')
@@ -77,7 +82,7 @@ def register_view(request):
 
 def index(request):
     print(request.user.is_authenticated)
-    return HttpResponse("登录成功")
+    return render(request, 'user/index.html')
 
 
 def toRegister(request):
@@ -95,3 +100,62 @@ def register(request):
         return redirect(reverse("user:login"))
     else:
         return render(request, 'user/register.html', {'errorMessage': '两次密码不一致'})
+
+
+def pic_upload(request):
+    return render(request, 'app/pic_upload.html')
+
+
+def add_account_view(request):
+    u = User.objects.get(pk=1)
+    a = Account(user=u, account='c60068129', password='Czr1234567890.')
+    a.save()
+    return HttpResponse("添加账号成功")
+
+
+def pic_handle(request):
+    f1 = request.FILES.get('pic')
+    print(f1.name)
+    fname = '%s\\app\\%s' % (settings.MEDIA_ROOT, f1.name)
+    with open(fname, 'wb') as pic:
+        for c in f1.chunks():  # 将文件内容写入服务器
+            pic.write(c)
+    return HttpResponse('OK')
+
+
+def home(request):
+    return render(request, 'user/home.html')
+
+
+def toAccount(request):
+    user = request.user
+    accounts = user.accounts.all()
+    print(accounts)
+    return render(request, 'user/account.html', {'accounts': accounts})
+
+
+def AddAccount(request):
+    user = request.user
+    account = request.POST.get('account')
+    password = request.POST.get('password')
+    platform = request.POST.get('platform')
+    Account(account=account, password=password, platform=platform, user=user).save()
+    print('success', account, password, platform)
+    return redirect(reverse("user:toAccount"))
+
+
+def modAccount(request):
+    account = request.POST.get('account')
+    password = request.POST.get('password')
+    platform = request.POST.get('platform')
+    a = Account.objects.get(account=account)
+    a.password = password
+    a.platform = platform
+    a.save()
+    return redirect(reverse("user:toAccount"))
+
+
+def delAccount(request, account_id):
+    a = Account.objects.get(account_id=account_id)
+    a.delete()
+    return redirect(reverse("user:toAccount"))
