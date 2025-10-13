@@ -35,9 +35,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'app',
+    # 'app',
     'user',  # 注册应用
     'booktest',  # 注册应用
+    'gunicorn',  # 注册应用
 ]
 
 MIDDLEWARE = [
@@ -48,7 +49,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'booktest.middleware.MyMiddleware',
+    # 'booktest.middleware.MyMiddleware',
     'booktest.middleware.MyMiddlwareExp1',
 
 ]
@@ -160,3 +161,20 @@ SESSION_ENGINE = 'django.contrib.sessions.backends.db'  # 数据库存储session
 
 # 3.2过后，主键类型设置
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# 邮件配置
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'  # 邮箱服务器地址
+EMAIL_PORT = 587  # 邮箱服务器端口
+EMAIL_USE_TLS = True  # 启用TLS加密
+EMAIL_HOST_USER = 'your_email@gmail.com'  # 发件人邮箱
+EMAIL_HOST_PASSWORD = 'your_app_specific_password'  # 发件人邮箱密码
+DEFAULT_FROM_EMAIL = 'your_email@gmail.com'  # 默认发件人
+
+# Celery配置
+CELERY_BROKER_URL = 'redis://localhost:6379/0'  # Redis连接地址
+CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'  # Redis结果存储地址
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+
