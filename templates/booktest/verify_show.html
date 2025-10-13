@@ -1,0 +1,15 @@
+<html>
+<head>
+    <title>验证码</title>
+</head>
+<body>
+<form method="post" action="{% url 'booktest:verify_yz' %}">
+    {%csrf_token%}
+    <input type="text" name="yzm">
+    <img id="yzm" src="{% url 'booktest:verify_code' %}" style=""/>
+    <span id="change">看不清，换一个</span>
+    <br>
+    <input type="submit" value="提交">
+</form>
+</body>
+</html>
