@@ -5,6 +5,7 @@ from django.conf import settings
 from django.contrib import auth
 from django.contrib.auth.models import User
 from django.contrib.sessions.models import Session
+from django.core.paginator import Paginator
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse
@@ -127,11 +128,19 @@ def home(request):
     return render(request, 'user/home.html')
 
 
-def toAccount(request):
+def toAccount(request, pIndex=1):
     user = request.user
-    accounts = user.accounts.all()
-    print(accounts)
-    return render(request, 'user/account.html', {'accounts': accounts})
+    p = user.accounts.all()
+    print(p)
+    p = Paginator(p, 10)
+    if pIndex == '':
+        pIndex = '1'
+    # 通过url匹配的参数都是字符串类型，转换成int类型
+    pIndex = int(pIndex)
+    # 获取第pIndex页的数据
+    accounts = p.page(pIndex)
+    plist = p.page_range
+    return render(request, 'user/account.html', {'accounts': accounts, 'plist': plist, 'pIndex': pIndex})
 
 
 def AddAccount(request):
@@ -141,7 +150,7 @@ def AddAccount(request):
     platform = request.POST.get('platform')
     Account(account=account, password=password, platform=platform, user=user).save()
     print('success', account, password, platform)
-    return redirect(reverse("user:toAccount"))
+    return redirect(reverse("user:toAccount", args=[1]))
 
 
 def modAccount(request):
@@ -152,10 +161,10 @@ def modAccount(request):
     a.password = password
     a.platform = platform
     a.save()
-    return redirect(reverse("user:toAccount"))
+    return redirect(reverse("user:toAccount", args=[1]))
 
 
 def delAccount(request, account_id):
     a = Account.objects.get(account_id=account_id)
     a.delete()
-    return redirect(reverse("user:toAccount"))
+    return redirect(reverse("user:toAccount", args=[1]))
