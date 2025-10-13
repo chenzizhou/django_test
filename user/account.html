@@ -4,7 +4,7 @@
 
 {% block content %}
 <h2>欢迎来到账号管理</h2>
-<div>
+<div style="height: 550px">
     <!-- Button trigger modal -->
     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
         添加
@@ -73,17 +73,20 @@
             <td>{{account.password}}</td>
             <td>{{account.platform}}</td>
             <td>
-                <a class="btn btn-primary btn-sm" href="#" role="button" data-bs-toggle="modal"
-                   data-bs-target="#staticBackdrop1"
-                   style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .70rem;">修改</a>
+                <button class="btn btn-primary btn-sm" role="button" data-bs-toggle="modal"
+                        data-bs-target="#staticBackdrop{{forloop.counter}}"
+                        style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .70rem;">修改
+                </button>
                 <!--修改模态框-->
-                <div class="modal fade" id="staticBackdrop1" data-bs-backdrop="static" data-bs-keyboard="false"
+                <div class="modal fade" id="staticBackdrop{{forloop.counter}}" data-bs-backdrop="static"
+                     data-bs-keyboard="false"
                      tabindex="-1"
                      aria-labelledby="staticBackdropLabel" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h1 class="modal-title fs-5" id="staticBackdropLabel1">修改账号信息</h1>
+                                <h1 class="modal-title fs-5" id="staticBackdropLabel{{forloop.counter}}">
+                                    修改账号信息</h1>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                                         aria-label="Close"></button>
                             </div>
@@ -91,7 +94,8 @@
                                 {% csrf_token %}
                                 <div class="modal-body">
                                     <div class="input-group input-group-sm mb-3">
-                                        <span class="input-group-text" id="inputGroup-sizing-sm1">账号</span>
+                                        <span class="input-group-text"
+                                              id="inputGroup-sizing-sm{{forloop.counter}}">账号</span>
                                         <input type="text" class="form-control is-validated"
                                                aria-label="Sizing example input"
                                                aria-describedby="inputGroup-sizing-sm" placeholder="请输入账号"
@@ -129,12 +133,59 @@
                         </div>
                     </div>
                 </div>
-                <a class="btn btn-danger btn-sm" href="{% url 'user:delAccount' account.account_id %}" role="button"
-                   style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .70rem;">删除</a>
+                <!-- 删除按钮 -->
+                <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                        data-bs-target="#confirmDeleteModal{{forloop.counter}}"
+                        style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .70rem;">
+                    删除
+                </button>
+
+                <!-- 确认删除模态框 -->
+                <div class="modal fade" id="confirmDeleteModal{{forloop.counter}}" tabindex="-1"
+                     aria-labelledby="confirmDeleteModalLabel{{forloop.counter}}"
+                     aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="confirmDeleteModalLabel{{forloop.counter}}">确认删除</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                您确定要删除这条记录吗？此操作不可逆。
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                                <a type="button" class="btn btn-danger" id="confirmDeleteBtn"
+                                   href="{% url 'user:delAccount' account.account_id %}" role="button"
+                                >确认删除</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </td>
         </tr>
         {%endfor%}
         </tbody>
     </table>
+
 </div>
+<nav aria-label="Page navigation example" class="d-flex justify-content-end">
+    <ul class="pagination">
+        <li class="page-item">
+            <a class="page-link" href="#" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+        </li>
+        {%for p in plist%}
+        <li class="page-item"><a class="page-link" href="{% url 'user:toAccount' p %}">{{p}}</a></li>
+        {% endfor %}
+        <li class="page-item">
+            <a class="page-link" href="#" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+        </li>
+    </ul>
+</nav>
+
 {% endblock %}
