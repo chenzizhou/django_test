@@ -13,11 +13,12 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
-from django.urls import path, include, re_path
+from django.urls import path, include
 
-from app.views import *
+from user.views import add_account_view, pic_upload, pic_handle
 
 # path() 函数接收一个路由模板字符串和一个视图函数作为参数，用于将 URL 路径映射到对应的视图函数。
 # re_path() 函数接收一个正则表达式风格的路由模板字符串和一个视图函数作为参数，用于将 URL 路径映射到对应的视图函数。
@@ -32,11 +33,14 @@ from app.views import *
 # 参数 1：路由模板字符串，参数2：视图函数，参数3：路由别名（可选），用于给这个 URL 路由命名，方便在模板或代码中通过 `reverse()` 获取 URL。
 # include() 函数用于将一个 URL 路由配置包含到另一个 URL 路由配置中，通常用于模块化 URL 路由配置。
 urlpatterns = [
-                  re_path('^$', include('booktest.urls', namespace='booktest')),
-                  re_path(r'^admin/', admin.site.urls),
+                  path('booktest/', include('booktest.urls', namespace='booktest')),
+                  # http://localhost:8000/index/2025/02/
+                  # re_path("^index/(?P<year>[0-9]{4})/(?P<month>[0-9]{2})/$", index),
+                  path('admin/', admin.site.urls),
                   path('addAccount/', add_account_view, name='addAccount'),
-                  path(r'^pic_upload/$', pic_upload),
-                  path(r'^pic_handle/$', pic_handle),
-                  path('user/', include('user.urls'), name='user'),
+                  path('pic_upload/', pic_upload),
+                  path('pic_handle/', pic_handle),
+                  path('user/', include('user.urls', namespace='user')),   # 路由分发
+
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-print(urlpatterns, '-----------------------')
+# print(urlpatterns, '-----------------------')
