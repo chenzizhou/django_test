@@ -16,15 +16,18 @@
             background-color: #343a40;
             padding-top: 20px;
         }
+
         .sidebar a {
             color: white;
             text-decoration: none;
             display: block;
             padding: 10px 20px;
         }
+
         .sidebar a:hover {
             background-color: #495057;
         }
+
         .content {
             margin-left: 250px;
             padding: 20px;
@@ -33,23 +36,23 @@
 </head>
 <body>
 
-    <!-- 侧边导航栏 -->
-    <div class="sidebar">
-        <h4 class="text-white text-center">菜单</h4>
-        <a href="{% url 'user:home' %}">首页</a>
-        <a href="{% url 'user:toAccount' %}">账号管理</a>
+<!-- 侧边导航栏 -->
+<div class="sidebar">
+    <h4 class="text-white text-center">菜单</h4>
+    <a href="{% url 'user:home' %}">首页</a>
+    <a href="{% url 'user:toAccount'%}?pIndex=1 ">账号管理</a>
 
-    </div>
+</div>
 
-    <!-- 内容区域 -->
-    <div class="content">
-        {% block content %}
-        <h1>欢迎访问我的网站</h1>
-        <p>这是默认内容区域。</p>
-        {% endblock %}
-    </div>
+<!-- 内容区域 -->
+<div class="content">
+    {% block content %}
+    <h1>欢迎访问我的网站</h1>
+    <p>这是默认内容区域。</p>
+    {% endblock %}
+</div>
 
-    <!-- 引入 Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<!-- 引入 Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
