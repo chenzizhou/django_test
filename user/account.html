@@ -3,7 +3,19 @@
 {% block title %}账号管理 - 我的网站{% endblock %}
 
 {% block content %}
+<style>
+    .input-group-text {
+        cursor: pointer;
+    }
+</style>
 <h2>欢迎来到账号管理</h2>
+<div>
+    <form action="{% url 'user:toAccount'%}" class="input-group mb-3">
+        <input type="text" class="form-control" id="searchInput" placeholder="根据账号、平台搜索" name="searchInput"
+               value="{{searchInput}}">
+        <button class="btn btn-primary" type="submit" id="searchButton">搜索</button>
+    </form>
+</div>
 <div style="height: 550px">
     <!-- Button trigger modal -->
     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
@@ -70,7 +82,16 @@
         <tr>
             <th scope="row">{{forloop.counter}}</th>
             <td>{{account.account}}</td>
-            <td>{{account.password}}</td>
+            <td>
+                <div>
+                    <input type="password" class="" id="passwordInput{{account.account_id}}" placeholder="请输入密码"
+                           value="{{account.password}}">
+                    <span class="input-group-text" id="togglePassword{{account.account_id}}">
+                        <i class="fas fa-eye" id="eyeIcon"></i>
+      </span>
+                </div>
+
+            </td>
             <td>{{account.platform}}</td>
             <td>
                 <button class="btn btn-primary btn-sm" role="button" data-bs-toggle="modal"
@@ -124,7 +145,7 @@
                                                oninput="this.setCustomValidity('')" value="{{account.platform}}">
                                     </div>
                                 </div>
-                                <div class=" modal-footer">
+                                <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消
                                     </button>
                                     <button type="submit" class="btn btn-primary">确定</button>
@@ -157,7 +178,7 @@
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
                                 <a type="button" class="btn btn-danger" id="confirmDeleteBtn"
-                                   href="{% url 'user:delAccount' account.account_id %}" role="button"
+                                   href="{% url 'user:delAccount' account.account_id %}?pIndex={{pIndex}}" role="button"
                                 >确认删除</a>
                             </div>
                         </div>
@@ -178,7 +199,7 @@
             </a>
         </li>
         {%for p in plist%}
-        <li class="page-item"><a class="page-link" href="{% url 'user:toAccount' p %}">{{p}}</a></li>
+        <li class="page-item"><a class="page-link" href="{% url 'user:toAccount'%}?pIndex={{p}}">{{p}}</a></li>
         {% endfor %}
         <li class="page-item">
             <a class="page-link" href="#" aria-label="Next">
@@ -187,5 +208,22 @@
         </li>
     </ul>
 </nav>
+<!-- 引入 Bootstrap 5 JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    const passwordInput = document.getElementById('passwordInput');
+    const eyeIcon = document.getElementById('eyeIcon');
+    const togglePassword = document.getElementById('togglePassword');
+
+    togglePassword.addEventListener('click', () => {
+        const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+        passwordInput.setAttribute('type', type);
+
+        // 切换图标
+        eyeIcon.classList.toggle('fa-eye');
+        eyeIcon.classList.toggle('fa-eye-slash');
+    });
+</script>
+
 
 {% endblock %}
