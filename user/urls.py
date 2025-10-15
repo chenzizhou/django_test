@@ -1,6 +1,7 @@
 from django.urls import path
 
-from user.views import login_view, index, toRegister, register, home, toAccount, AddAccount, modAccount, delAccount
+from user.views import login_view, index, toRegister, register, home, toAccount, AddAccount, modAccount, delAccount, \
+    logout
 
 app_name = 'user'
 
@@ -15,4 +16,5 @@ urlpatterns = [
     path('AddAccount/', AddAccount, name='AddAccount'),
     path('modAccount/', modAccount, name='modAccount'),
     path('delAccount/<int:account_id>/', delAccount, name='delAccount'),
+    path('logout', logout, name='logout'),
 ]
